@@ -1,3 +1,4 @@
+using Domain.Models;
 using FluentAssertions;
 using IntegratedTests.Commons;
 using Xunit;
@@ -6,41 +7,37 @@ namespace IntegratedTests;
 
 public class PositionTest : IClassFixture<PositionTestFixture>
 {
-    private readonly PositionTestFixture _fixture;
+    private const string Cpf = "12345678901";  
+    private const string AssetA = "123XYZ4";
+    private const string AssetB = "456XYZ7";
+    
+    private DateTime Date => DateTime.Today;
+    public PositionTestFixture Fixture { get; }
 
-    public PositionTest(PositionTestFixture fixture)
-    {
-        _fixture = fixture;
-    }
+    public PositionTest(PositionTestFixture fixture) => Fixture = fixture;
 
     [Fact]
     public async Task Test2()
     {
         // Arrange
-        var date = DateTime.Today;
-        const string cpf = "12345678901";
-        
-        const string assetA = "123XYZ4";
-        var creditoA = Builders.Credit(cpf, assetA, 5000);
-        var debitosA = Builders.Debit(cpf, assetA, 1000);
-        
-        const string assetB = "456XYZ7";
-        var creditoB = Builders.Credit(cpf, assetB, 1000);
-        var creditoC = Builders.Credit(cpf, assetB, 1000);
+        var creditA = Builders.Credit(Cpf, AssetA, 5000);
+        var debitsB = Builders.Debits(Cpf, AssetA, 1000);
+        var creditB = Builders.Credit(Cpf, AssetB, 1000);
+        var creditC = Builders.Credit(Cpf, AssetB, 1000);
         
         // Act
-        await _fixture.SetupOperacao(creditoA);
-        await _fixture.SetupOperacao(debitosA);
+        await Fixture.AddOperation(creditA);
+        await Fixture.AddOperation(debitsB);
+        await Fixture.AddOperation(creditB);
+        await Fixture.AddOperation(creditC);
         
-        await _fixture.SetupOperacao(creditoB);
-        await _fixture.SetupOperacao(creditoC);
-        await _fixture.PositionUseCase.Execute(date);
+        await Fixture.Consolidate(Date);
+        
+        var positionA = await Fixture.GetPosition(Cpf, AssetA, Date);
+        var positionB = await Fixture.GetPosition(Cpf, AssetB, Date);
         
         // Assert
-        var saldoA = await _fixture.GetSaldo(cpf, assetA, date);
-        saldoA.Should().Be(4000);
-        
-        var saldoB = await _fixture.GetSaldo(cpf, assetB, date);
-        saldoB.Should().Be(2000);        
+        positionA.Should().Be(4000);
+        positionB.Should().Be(2000);        
     }
 }

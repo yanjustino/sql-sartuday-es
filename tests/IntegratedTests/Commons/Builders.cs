@@ -18,24 +18,20 @@ public static class Builders
         .Generate();
 
     public static AddMovementCommand Credit(string cpf, string asset, decimal price, int qtd = 1)
-        => new()
+        => RandomOperation(C) with
         {
             Cpf = cpf,
             Asset = asset,
             Quantity = qtd,
             Price = price,
-            Date = DateTime.Today,
-            Type = C
         };
     
-    public static AddMovementCommand Debit(string cpf, string asset, decimal price, int qtd = 1) 
-        => new()
+    public static AddMovementCommand Debits(string cpf, string asset, decimal price, int qtd = 1) 
+        => RandomOperation(D) with
         {
             Cpf = cpf,
             Asset = asset,
             Quantity = qtd,
             Price = price,
-            Date = DateTime.Today,
-            Type = D
         };    
 }

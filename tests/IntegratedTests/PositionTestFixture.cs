@@ -24,10 +24,13 @@ public class PositionTestFixture: IAsyncLifetime
     
     public async Task DisposeAsync() => await _dbFixture.DisposeAsync();
     
-    public async Task SetupOperacao(AddMovementCommand movement) 
+    public async Task AddOperation(AddMovementCommand movement) 
         => await MovementUseCase.Execute(movement);
+    
+    public async Task Consolidate(DateTime dateTime) 
+        => await PositionUseCase.Execute(dateTime);   
 
-    public async Task<decimal> GetSaldo(string cpf, string asset, DateTime dateTime)
+    public async Task<decimal> GetPosition(string cpf, string asset, DateTime dateTime)
     {
         var position = await PositionRepository.Get(cpf, asset, dateTime);
         return position?.Value ?? 0;
