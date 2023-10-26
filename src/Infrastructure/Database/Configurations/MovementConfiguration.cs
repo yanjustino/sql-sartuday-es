@@ -42,7 +42,14 @@ public class MovementConfiguration : IEntityTypeConfiguration<Movement>
             .HasColumnType("DECIMAL")
             .HasPrecision(15,2)
             .HasDefaultValue(0)
-            .IsRequired();          
+            .IsRequired();    
+        
+        builder.Property(p => p.PriceCurve)
+            .HasColumnName("val_ativo_curva")
+            .HasColumnType("DECIMAL")
+            .HasPrecision(15,2)
+            .HasDefaultValue(0)
+            .IsRequired();         
         
         builder.Property(p => p.Type)
             .HasColumnName("tip_ativo")

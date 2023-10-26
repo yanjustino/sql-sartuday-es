@@ -7,6 +7,7 @@ public class Movement
     public string Asset { get; set; } = string.Empty;
     public int Quantity { get; set; }
     public decimal Price { get; set; }
+    public decimal PriceCurve { get; set; }
     public char Type { get; set; }
     public DateTime Date { get; set; }
     public DateTime CreatedOn { get; set; }

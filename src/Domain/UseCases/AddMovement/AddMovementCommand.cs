@@ -31,6 +31,12 @@ public partial record AddMovementCommand
             MovementType.CREDITO => this.Price,
             _ => default
         },
+        PriceCurve = Type?.Value switch
+        {
+            MovementType.DEBITO => decimal.Negate(this.Price * 1.05M),
+            MovementType.CREDITO => this.Price * 1.05M,
+            _ => default
+        },
         Type = Type?.Value switch
         {
             MovementType.DEBITO => MovementType.DEBITO,
