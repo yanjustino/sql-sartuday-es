@@ -1,8 +1,3 @@
-using Domain.Adapters.Repositories;
-using Domain.UseCases.AddMovement;
-using Domain.UseCases.ConsolidatePosition;
-using Xunit;
-
 namespace IntegratedTests.Commons;
 
 public class MainFixture: IAsyncLifetime
@@ -21,6 +16,4 @@ public class MainFixture: IAsyncLifetime
     }    
     
     public async Task DisposeAsync() => await _dbFixture.DisposeAsync();
-    
-    
 }

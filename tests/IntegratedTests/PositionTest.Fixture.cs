@@ -1,10 +1,3 @@
-using Domain.Models;
-using Domain.UseCases.AddMovement;
-using FluentAssertions;
-using IntegratedTests.Commons;
-using Xunit;
-using Xunit.Abstractions;
-
 namespace IntegratedTests;
 
 public partial class PositionTest : IClassFixture<MainFixture>
@@ -15,22 +8,14 @@ public partial class PositionTest : IClassFixture<MainFixture>
     private static DateTime DataCorrente => DateTime.Today;
     
     public MainFixture Fixture { get; }
-
-    /// <summary>
-    /// Constructor
-    /// </summary>
-    /// <param name="fixture"></param>
-    public PositionTest(MainFixture fixture)
-    {
-        Fixture = fixture;
-    }
+    public PositionTest(MainFixture fixture) => Fixture = fixture;
 
     private static void criar_operacao(string cpf, char type, string asset, decimal valor, out AddMovementCommand command) =>
         command = type switch
         {
-            MovementType.CRD => Builders.Credit(cpf, asset, valor),
-            MovementType.DEB => Builders.Debits(cpf, asset, valor),
-            _ => Builders.RandomOperation(MovementType.C)
+            CRD => Builders.Credit(cpf, asset, valor),
+            DEB => Builders.Debits(cpf, asset, valor),
+            _ => Builders.RandomOperation(CREDITO)
         };
 
     private async Task registrar_posicao(AddMovementCommand command)

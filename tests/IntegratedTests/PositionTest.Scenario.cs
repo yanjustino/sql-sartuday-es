@@ -1,8 +1,3 @@
-using System.ComponentModel;
-using FluentAssertions;
-using Xunit;
-using static Domain.Models.MovementType;
-
 namespace IntegratedTests;
 
 public partial class PositionTest

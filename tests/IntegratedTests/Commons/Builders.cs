@@ -1,8 +1,3 @@
-using Bogus;
-using Domain.Models;
-using Domain.UseCases.AddMovement;
-using static Domain.Models.MovementType;
-
 namespace IntegratedTests.Commons;
 
 public static class Builders
@@ -18,7 +13,7 @@ public static class Builders
         .Generate();
 
     public static AddMovementCommand Credit(string cpf, string asset, decimal price, int qtd = 1)
-        => RandomOperation(C) with
+        => RandomOperation(CREDITO) with
         {
             Cpf = cpf,
             Asset = asset,
@@ -27,7 +22,7 @@ public static class Builders
         };
     
     public static AddMovementCommand Debits(string cpf, string asset, decimal price, int qtd = 1) 
-        => RandomOperation(D) with
+        => RandomOperation(DEBITO) with
         {
             Cpf = cpf,
             Asset = asset,

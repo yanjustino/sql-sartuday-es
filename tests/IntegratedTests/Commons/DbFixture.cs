@@ -1,9 +1,3 @@
-using Domain.Adapters.Repositories;
-using Infrastructure.Database;
-using Infrastructure.Database.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection;
-using Testcontainers.MsSql;
-
 namespace IntegratedTests.Commons;
 
 public class DbFixture
