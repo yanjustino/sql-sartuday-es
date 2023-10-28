@@ -10,7 +10,7 @@ namespace IntegratedTests;
 public class PositionTestFixture: IAsyncLifetime
 {
     private readonly DbFixture _dbFixture = new();
-
+    
     public AddMovementUseCase MovementUseCase { get; set; } = null!;
     public ConsolidatePositionUseCase PositionUseCase { get; set; } = null!;
     public IPositionRepository PositionRepository => _dbFixture.UnitOfWork!.PositionRepository;
