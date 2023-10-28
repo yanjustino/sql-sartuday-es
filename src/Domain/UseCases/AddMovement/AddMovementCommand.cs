@@ -27,20 +27,20 @@ public partial record AddMovementCommand
         Quantity = Quantity,
         Price = Type?.Value switch
         {
-            MovementType.DEBITO => decimal.Negate(this.Price),
-            MovementType.CREDITO => this.Price,
+            MovementType.DEB => decimal.Negate(this.Price),
+            MovementType.CRD => this.Price,
             _ => default
         },
         PriceCurve = Type?.Value switch
         {
-            MovementType.DEBITO => decimal.Negate(this.Price * 1.05M),
-            MovementType.CREDITO => this.Price * 1.05M,
+            MovementType.DEB => decimal.Negate(this.Price * 1.05M),
+            MovementType.CRD => this.Price * 1.05M,
             _ => default
         },
         Type = Type?.Value switch
         {
-            MovementType.DEBITO => MovementType.DEBITO,
-            MovementType.CREDITO => MovementType.CREDITO,
+            MovementType.DEB => MovementType.DEB,
+            MovementType.CRD => MovementType.CRD,
             _ => default
         },
         Date = Date,

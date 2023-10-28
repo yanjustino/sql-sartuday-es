@@ -1,13 +1,11 @@
 using Domain.Adapters.Repositories;
-using Domain.Models;
 using Domain.UseCases.AddMovement;
 using Domain.UseCases.ConsolidatePosition;
-using IntegratedTests.Commons;
 using Xunit;
 
-namespace IntegratedTests;
+namespace IntegratedTests.Commons;
 
-public class PositionTestFixture: IAsyncLifetime
+public class MainFixture: IAsyncLifetime
 {
     private readonly DbFixture _dbFixture = new();
     
@@ -24,15 +22,5 @@ public class PositionTestFixture: IAsyncLifetime
     
     public async Task DisposeAsync() => await _dbFixture.DisposeAsync();
     
-    public async Task AddOperation(AddMovementCommand movement) 
-        => await MovementUseCase.Execute(movement);
     
-    public async Task Consolidate(DateTime dateTime) 
-        => await PositionUseCase.Execute(dateTime);   
-
-    public async Task<decimal> GetPosition(string cpf, string asset, DateTime dateTime)
-    {
-        var position = await PositionRepository.Get(cpf, asset, dateTime);
-        return position?.Value ?? 0;
-    }     
 }
