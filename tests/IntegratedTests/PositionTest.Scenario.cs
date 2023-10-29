@@ -1,3 +1,9 @@
+using System.Net;
+using System.Net.Http.Json;
+using System.Text;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Newtonsoft.Json;
+
 namespace IntegratedTests;
 
 public partial class PositionTest
@@ -16,7 +22,7 @@ public partial class PositionTest
         await registrar_posicao(operacao2);
         await registrar_posicao(operacao3);
         await registrar_posicao(operacao4);
-        await consolidar_posicao(DataCorrente);
+        await consolidar_posicao();
         
         // Assert
         var positionA = await recuperar_posicao(CPF, CDB);

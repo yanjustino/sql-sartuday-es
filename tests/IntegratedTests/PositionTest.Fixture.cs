@@ -1,3 +1,6 @@
+using System.Net;
+using System.Net.Http.Json;
+
 namespace IntegratedTests;
 
 public partial class PositionTest : IClassFixture<MainFixture>
@@ -19,10 +22,18 @@ public partial class PositionTest : IClassFixture<MainFixture>
         };
 
     private async Task registrar_posicao(AddMovementCommand command)
-        => await Fixture.MovementUseCase.Execute(command);
+    {
+        var client = Fixture.GetClient();
+        var response = await client.PostAsJsonAsync("/movement", command);
+        response.EnsureSuccessStatusCode();
+    }
 
-    private async Task consolidar_posicao(DateTime dataMovimento)
-        => await Fixture.PositionUseCase.Execute(dataMovimento);
+    private async Task consolidar_posicao()
+    {
+        var client = Fixture.GetClient();
+        var response = await client.PostAsJsonAsync("/position", new { });
+        response.EnsureSuccessStatusCode();
+    }
 
     private async Task<decimal> recuperar_posicao(string cpf, string asset)
     {

@@ -12,6 +12,7 @@
     <ItemGroup>
         <PackageReference Include="Bogus" Version="34.0.2" />
         <PackageReference Include="FluentAssertions" Version="7.0.0-alpha.2" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.0" />
         <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0-preview3.23201.1" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0"/>
         <PackageReference Include="Testcontainers.MsSql" Version="3.5.0" />
@@ -28,6 +29,7 @@
 
 
     <ItemGroup>
+      <ProjectReference Include="..\..\src\Api\Api.csproj" />
       <ProjectReference Include="..\..\src\Domain\Domain.csproj" />
       <ProjectReference Include="..\..\src\Infrastructure\Infrastructure.csproj" />
     </ItemGroup>

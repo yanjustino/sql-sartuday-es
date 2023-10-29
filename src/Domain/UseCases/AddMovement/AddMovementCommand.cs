@@ -12,7 +12,7 @@ public partial record AddMovementCommand
     public int Quantity { get; init; }
     public decimal Price { get; init; }
     public DateTime Date { get; init; }
-    public MovementType? Type { get; init; }
+    public char Type { get; init; }
 }
 
 /// <summary>
@@ -25,19 +25,19 @@ public partial record AddMovementCommand
         Cpf = Cpf,
         Asset = Asset,
         Quantity = Quantity,
-        Price = Type?.Value switch
+        Price = Type switch
         {
             MovementType.DEB => decimal.Negate(this.Price),
             MovementType.CRD => this.Price,
             _ => default
         },
-        PriceCurve = Type?.Value switch
+        PriceCurve = Type switch
         {
             MovementType.DEB => decimal.Negate(this.Price * 1.05M),
             MovementType.CRD => this.Price * 1.05M,
             _ => default
         },
-        Type = Type?.Value switch
+        Type = Type switch
         {
             MovementType.DEB => MovementType.DEB,
             MovementType.CRD => MovementType.CRD,

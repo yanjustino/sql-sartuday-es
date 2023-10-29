@@ -1,19 +1,23 @@
 namespace IntegratedTests.Commons;
 
-public class MainFixture: IAsyncLifetime
+public class MainFixture : IAsyncLifetime
 {
     private readonly DbFixture _dbFixture = new();
-    
-    public AddMovementUseCase MovementUseCase { get; set; } = null!;
-    public ConsolidatePositionUseCase PositionUseCase { get; set; } = null!;
+    private readonly ApiFixture _apiFixture = new ();
+
     public IPositionRepository PositionRepository => _dbFixture.UnitOfWork!.PositionRepository;
-    
+
     public async Task InitializeAsync()
     {
         await _dbFixture.InitializeAsync();
-        MovementUseCase = new AddMovementUseCase(_dbFixture.UnitOfWork!);
-        PositionUseCase = new ConsolidatePositionUseCase(_dbFixture.UnitOfWork!);
-    }    
-    
-    public async Task DisposeAsync() => await _dbFixture.DisposeAsync();
+        await _apiFixture.InitializeAsync(_dbFixture.ConnectionString);
+    }
+
+    public HttpClient GetClient() => _apiFixture.GetClient();
+
+    public async Task DisposeAsync()
+    {
+        await _apiFixture.DisposeAsync();
+        await _dbFixture.DisposeAsync();
+    }
 }

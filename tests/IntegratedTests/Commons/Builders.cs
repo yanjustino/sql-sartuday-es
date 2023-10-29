@@ -4,7 +4,7 @@ public static class Builders
 {
     public static AddMovementCommand RandomOperation(MovementType type) 
         => new Faker<AddMovementCommand>()
-        .RuleFor(r => r.Type, ()=> type)
+        .RuleFor(r => r.Type, ()=> type.Value == DEB ? DEB : CRD)
         .RuleFor(r => r.Cpf, f => f.Random.Replace("###########"))
         .RuleFor(r => r.Asset, f => f.Random.Replace("###???*"))
         .RuleFor(o => o.Quantity, f => f.Random.Number(1, 100_000))

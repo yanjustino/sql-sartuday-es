@@ -2,12 +2,12 @@ namespace IntegratedTests.Commons;
 
 public class DbFixture
 {
-    private MsSqlContainer? _container;
-    private SqlSartudayDbContext? _context;
-    private ServiceProvider? _provider;
+    private MsSqlContainer _container = null!;
+    private ServiceProvider _provider = null!;
+    public string ConnectionString { get; private set; } = "";
     
     public IUnityOfWork? UnitOfWork =>
-        _provider?.GetService<IUnityOfWork>();
+        _provider.GetService<IUnityOfWork>();
 
     public async Task InitializeAsync()
     {
@@ -24,15 +24,20 @@ public class DbFixture
 
     private Task ConfigureDbContext()
     {
-        var connection = _container!.GetConnectionString();
-        var services = new ServiceCollection().AddDataBase(connection);
-        _provider = services.BuildServiceProvider();
-        _context = _provider.GetService<SqlSartudayDbContext>();
+        ConnectionString = _container.GetConnectionString();
+        
+        _provider = new ServiceCollection()
+            .AddDataBase(ConnectionString)
+            .BuildServiceProvider();
         
         return Task.CompletedTask;
     }
 
-    private async Task MigrateDataBase() => await _context!.Database.EnsureCreatedAsync();
+    private async Task MigrateDataBase()
+    {
+        var context = _provider.GetService<SqlSartudayDbContext>()!;
+        await context.Database.EnsureCreatedAsync();
+    }
 
     public async Task DisposeAsync() => await _container!.StopAsync();
 }
